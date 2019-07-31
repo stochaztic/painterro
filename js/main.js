@@ -6,7 +6,7 @@ import '../css/icons/ptroiconfont.css';
 
 import PainterroSelecter from './selecter';
 import WorkLog from './worklog';
-import { genId, addDocumentObjectHelpers, KEYS, trim,
+import { genId, addDocumentObjectHelpers, trim,
   getScrollbarWidth, distance } from './utils';
 import PrimitiveTool from './primitive';
 import ColorPicker from './colorPicker';
@@ -14,6 +14,8 @@ import { setDefaults, setParam, logError } from './params';
 import { tr } from './translation';
 import ZoomHelper from './zoomHelper';
 import TextTool from './text';
+import StampTool from './stamp';
+import FloodTool from './flood';
 import Resizer from './resizer';
 import Inserter from './inserter';
 import Settings from './settings';
@@ -189,6 +191,56 @@ class PainterroProc {
       },
       eventListner: () => this.primitiveTool,
     }, {
+      name: 'flood',
+      controls: [{
+        type: 'color',
+        title: 'fillColor',
+        titleFull: 'fillColorFull',
+        target: 'fill',
+        action: () => {
+          this.colorPicker.open(this.colorWidgetState.fill);
+        },
+      }, {
+        type: 'int',
+        title: 'tolerance',
+        titleFull: 'toleranceFull',
+        target: 'tolerance',
+        min: 0,
+        max: 100,
+        action: () => {
+          const inp = document.getElementById(this.activeTool.controls[1].id).value;
+          this.floodTool.setTolerance(inp);
+          setParam('tolerance', inp);
+        },
+        getValue: () => this.floodTool.tolerance,
+      },
+      ],
+      activate: () => {
+        this.toolContainer.style.cursor = 'crosshair';
+      },
+      eventListner: () => this.floodTool,
+    }, {
+      name: 'stamp',
+      controls: [
+        {
+          type: 'dropdown',
+          title: 'stampName',
+          titleFull: 'stampNameFull',
+          target: 'stampName',
+          action: () => {
+            const dropdown = document.getElementById(this.activeTool.controls[0].id);
+            const stamp = dropdown.value;
+            this.stampTool.setStamp(stamp);
+          },
+          getValue: () => this.stampTool.getStamp(),
+          getAvailableValues: () => this.stampTool.stamps,
+        },
+      ],
+      activate: () => {
+        this.toolContainer.style.cursor = 'crosshair';
+      },
+      eventListner: () => this.stampTool,
+    }, {
       name: 'text',
       controls: [
         {
@@ -295,6 +347,13 @@ class PainterroProc {
       name: 'undo',
       activate: () => {
         this.worklog.undoState();
+        this.closeActiveTool();
+      },
+      eventListner: () => this.resizer,
+    }, {
+      name: 'redo',
+      activate: () => {
+        this.worklog.redoState();
         this.closeActiveTool();
       },
       eventListner: () => this.resizer,
@@ -457,6 +516,7 @@ class PainterroProc {
         this.saveBtn.removeAttribute('disabled');
       }
       this.setToolEnabled(this.toolByName.undo, !state.first);
+      this.setToolEnabled(this.toolByName.redo, !state.last);
       if (this.params.changeHandler) {
         this.params.changeHandler.call(this, {
           image: this.imageSaver,
@@ -467,6 +527,8 @@ class PainterroProc {
     });
     this.inserter.init(this);
     this.textTool = new TextTool(this);
+    this.stampTool = new StampTool(this, params.stamps);
+    this.floodTool = new FloodTool(this);
     this.colorPicker = new ColorPicker(this, (widgetState) => {
       this.colorWidgetState[widgetState.target] = widgetState;
       this.doc.querySelector(
@@ -727,117 +789,16 @@ class PainterroProc {
           this.colorPicker.handleMouseUp(e);
         }
       },
-      mousewheel: (e) => {
-        if (this.shown) {
-          if (e.ctrlKey) {
-            // console.log(e.wheelDelta);
-            let minFactor = 1;
-            if (this.size.w > this.wrapper.documentClientWidth) {
-              minFactor = Math.min(minFactor, this.wrapper.documentClientWidth / this.size.w);
-            }
-            if (this.size.h > this.wrapper.documentClientHeight) {
-              minFactor = Math.min(minFactor, this.wrapper.documentClientHeight / this.size.h);
-            }
-            if (!this.zoom && this.zoomFactor > minFactor) {
-              this.zoomFactor = minFactor;
-            }
-            this.zoomFactor += Math.sign(e.wheelDelta) * 0.2;
-            if (this.zoomFactor < minFactor) {
-              this.zoom = false;
-              this.zoomFactor = minFactor;
-            } else {
-              this.zoom = true;
-            }
-            this.adjustSizeFull();
-            this.select.adjustPosition();
-            if (this.zoom) {
-              this.scroller.scrollLeft = (this.curCord[0] / this.getScale()) -
-                (e.clientX - this.wrapper.documentOffsetLeft);
-              this.scroller.scrollTop = (this.curCord[1] / this.getScale()) -
-                (e.clientY - this.wrapper.documentOffsetTop);
-            }
-            e.preventDefault();
-          }
-        }
+      mousewheel: () => {
       },
       keydown: (e) => {
         if (this.shown) {
           this.colorPicker.handleKeyDown(e);
           const evt = window.event ? event : e;
           this.handleToolEvent('handleKeyDown', evt);
-          if (
-            (evt.keyCode === KEYS.y && evt.ctrlKey) ||
-            (evt.keyCode === KEYS.z && evt.ctrlKey && evt.shiftKey)) {
-            this.worklog.redoState();
-            e.preventDefault();
-            if (this.params.userRedo) {
-              this.params.userRedo.call();
-            }
-          } else if (evt.keyCode === KEYS.z && evt.ctrlKey) {
-            this.worklog.undoState();
-            e.preventDefault();
-            if (this.params.userUndo) {
-              this.params.userUndo.call();
-            }
-          }
-
-          if (this.saveBtn) {
-            if (evt.keyCode === KEYS.s && evt.ctrlKey) {
-              this.save();
-              evt.preventDefault();
-            }
-          }
         }
       },
-      paste: (event) => {
-        if (this.shown) {
-          const items = (event.clipboardData || event.originalEvent.clipboardData).items;
-          Object.keys(items).forEach((k) => {
-            const item = items[k];
-            if (item.kind === 'file' && item.type.split('/')[0] === 'image') {
-              this.openFile(item.getAsFile());
-            } else if (item.kind === 'string') {
-              let txt = '';
-              if (window.clipboardData && window.clipboardData.getData) { // IE
-                txt = window.clipboardData.getData('Text');
-              } else if (event.clipboardData && event.clipboardData.getData) {
-                txt = event.clipboardData.getData('text/plain');
-              }
-              if (txt.startsWith(this.inserter.CLIP_DATA_MARKER)) {
-                this.loadImage(localStorage.getItem(this.inserter.CLIP_DATA_MARKER));
-              }
-            }
-          });
-        }
-      },
-      dragover: (event) => {
-        if (this.shown) {
-          const mainClass = event.target.classList[0];
-          if (mainClass === 'ptro-crp-el' || mainClass === 'ptro-bar') {
-            this.bar.className = 'ptro-bar ptro-color-main ptro-bar-dragover';
-          }
-          event.preventDefault();
-        }
-      },
-      dragleave: () => {
-        if (this.shown) {
-          this.bar.className = 'ptro-bar ptro-color-main';
-        }
-      },
-      drop: (event) => {
-        if (this.shown) {
-          this.bar.className = 'ptro-bar ptro-color-main';
-          event.preventDefault();
-          const file = event.dataTransfer.files[0];
-          if (file) {
-            this.openFile(file);
-          } else {
-            const text = event.dataTransfer.getData('text/html');
-            const srcRe = /src.*?=['"](.+?)['"]/;
-            const srcMatch = srcRe.exec(text);
-            this.inserter.handleOpen(srcMatch[1]);
-          }
-        }
+      paste: () => {
       },
     };
 
@@ -984,7 +945,6 @@ class PainterroProc {
   }
 
   resize(x, y) {
-    this.info.innerHTML = `${x} x ${y}`;
     this.size = {
       w: x,
       h: y,

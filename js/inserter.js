@@ -1,5 +1,5 @@
 import { tr } from './translation';
-import { genId, KEYS, copyToClipboard, imgToDataURL } from './utils';
+import { genId, KEYS, imgToDataURL } from './utils';
 
 let instance = null;
 export default class Inserter {
@@ -57,15 +57,17 @@ export default class Inserter {
       },
       paste_over: {
         internalName: 'over',
-        handle: (img) => {
+        handle: (img, opts = {}) => {
           this.tmpImg = img;
           const oldH = this.main.size.h;
           const oldW = this.main.size.w;
           if (img.naturalHeight <= oldH && img.naturalWidth <= oldW) {
+            const x = opts.x !== undefined ? (opts.x) - (img.naturalWidth / 2) : 0;
+            const y = opts.y !== undefined ? (opts.y) - (img.naturalHeight / 2) : 0;
             this.main.select.placeAt(
-              0, 0,
-              oldW - img.naturalWidth,
-              oldH - img.naturalHeight, img);
+              x, y,
+              (oldW - img.naturalWidth) - x,
+              (oldH - img.naturalHeight) - y, img);
           } else if (img.naturalWidth / img.naturalHeight > oldW / oldH) {
             const newH = oldW * (img.naturalHeight / img.naturalWidth);
             this.main.select.placeAt(0, 0, 0, oldH - newH, img);
@@ -74,6 +76,7 @@ export default class Inserter {
             this.main.select.placeAt(0, 0, oldW - newW, 0, img);
           }
           this.worklog.captureState();
+          this.main.select.nextTool = opts.nextTool;
         },
       },
     };
@@ -122,6 +125,28 @@ export default class Inserter {
     }
   }
 
+  handleStamp(src, opts = {}) {
+    this.startLoading();
+    const handleIt = (source) => {
+      const img = new Image();
+      img.onload = () => {
+        this.loaded(img);
+        this.pasteOptions.paste_over.handle(img, opts);
+        this.finishLoading();
+      };
+      img.src = source;
+    };
+
+    if (src.indexOf('data') !== 0) {
+      imgToDataURL(src, (dataUrl) => { // if CORS will not allow,
+        // better see error in console than have different canvas mode
+        handleIt(dataUrl);
+      });
+    } else {
+      handleIt(src);
+    }
+  }
+
   handleOpen(src) {
     this.startLoading();
     const handleIt = (source) => {
@@ -159,23 +184,6 @@ export default class Inserter {
   handleKeyDown(evt) {
     if (this.waitChoice && evt.keyCode === KEYS.esc) {
       this.cancelChoosing();
-    }
-    if (!this.waitChoice && !this.main.select.imagePlaced && this.main.select.shown &&
-        evt.keyCode === KEYS.c && (evt.ctrlKey || evt.metaKey)) {
-      const a = this.main.select.area;
-      const w = a.bottoml[0] - a.topl[0];
-      const h = a.bottoml[1] - a.topl[1];
-      const tmpCan = this.main.doc.createElement('canvas');
-      tmpCan.width = w;
-      tmpCan.height = h;
-      const tmpCtx = tmpCan.getContext('2d');
-      tmpCtx.drawImage(this.main.canvas, -a.topl[0], -a.topl[1]);
-      copyToClipboard(this.CLIP_DATA_MARKER);
-      try {
-        localStorage.setItem(this.CLIP_DATA_MARKER, tmpCan.toDataURL());
-      } catch (e) {
-        console.error(`Unable save image to localstorage: ${e}`);
-      }
     }
   }
 

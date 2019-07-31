@@ -186,6 +186,7 @@ ${Math.round(pxData[i][j][3] / s)})`;
       this.area.topl[1],
       this.area.bottoml[0] - this.area.topl[0],
       this.area.bottoml[1] - this.area.topl[1]);
+    this.nextToolCheck();
   }
 
   cancelPlacing() {
@@ -193,6 +194,15 @@ ${Math.round(pxData[i][j][3] / s)})`;
     this.main.select.area.rect.style['background-image'] = 'none';
     this.hide();
     this.main.worklog.undoState();
+    this.nextToolCheck();
+  }
+
+  nextToolCheck() {
+    if (this.nextTool) {
+      this.close();
+      this.main.setActiveTool(this.main.toolByName[this.nextTool]);
+      this.nextTool = null;
+    }
   }
 
   handleKeyDown(evt) {

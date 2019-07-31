@@ -12,8 +12,8 @@
 
       #conatiner {
         position: relative;
-        height: 300px;
-        width: 300px;
+        height: 500px;
+        width: 700px;
       }
 
     </style>
@@ -27,18 +27,32 @@
 
 <!--<script src="https://github.com/ivictbor/painterro/releases/download/0.1.7/painterro-0.1.7.min.js"></script>-->
 <script src="/painterro.min.js"></script>
+<!--
+    useLayoutEffect(() => {
+        console.log("Drawing useLayoutEffect");
 
+        const p = Painterro({
+            activeColor: '#00ff00', // default brush color is green
+            id: `drawing_${props.title}`,
+            defaultTool: 'brush',
+            backgroundFillColor: "#ffffff",
+            backgroundFillColorAlpha: 1.0,
+            hiddenTools: ['select', 'crop', 'arrow', 'text', 'resize', 'rotate', 'pixelize', 'save', 'open', 'close'],
+            how_to_paste_actions: ['paste_over'],
+        });
+        p.show();
+        window.p = Painterro;
+    }, [props.title]);
+-->
 <script>
 
   Painterro({
+    activeColor: '#00ff00', // default brush color is green
+    defaultTool: 'brush',
+    backgroundFillColor: "#ffffff",
+    backgroundFillColorAlpha: 1.0,
+    hiddenTools: ['select', 'crop', 'arrow', 'text', 'resize', 'rotate', 'pixelize', 'save', 'open', 'close', 'settings'],
     id: 'conatiner',
-    backgroundFillColor: '#eee',
-    colorScheme: {
-      main: '#faf',
-      control: '#d5d',
-      activeControl: '#572257',
-      inputBackground: '#cf99ca',
-    }
   }).show();
 </script>
 </body>

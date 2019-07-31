@@ -49,7 +49,7 @@ export default class WorkLog {
     }
     this.changedHandler({
       first: this.current.prev === null,
-      last: this.current.last === null,
+      last: this.current.last === true,
       initial,
     });
     this.empty = initial;
@@ -69,10 +69,12 @@ export default class WorkLog {
       this.clearedCount = 0;
     } else {
       state.prev = this.current;
+      state.prev.last = false;
       state.prevCount = this.current.prevCount + 1;
       this.current.next = state;
     }
     state.next = null;
+    state.last = true;
     this.current = state;
     this.changed(initial);
   }
