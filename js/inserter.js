@@ -84,6 +84,7 @@ export default class Inserter {
   }
 
   init(main) {
+    debugger;
     this.CLIP_DATA_MARKER = 'painterro-image-data';
     this.ctx = main.ctx;
     this.main = main;
@@ -211,9 +212,11 @@ export default class Inserter {
   }
 
   static get() {
+    /*
     if (instance) {
       return instance;
     }
+    */
     instance = new Inserter();
     return instance;
   }

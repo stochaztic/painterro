@@ -25,6 +25,7 @@ export default class StampTool {
         nextTool: 'stamp',
       };
       const url = this.getStamp();
+      debugger;
       this.main.inserter.handleStamp(url, opts);
     }
   }

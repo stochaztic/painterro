@@ -705,6 +705,7 @@ class PainterroProc {
   initEventHandlers() {
     this.documentHandlers = {
       mousedown: (e) => {
+        if (!this.baseEl.contains(e.target)) return;
         if (this.shown) {
           if (this.worklog.empty &&
              (e.target.className.indexOf('ptro-crp-el') !== -1 ||
