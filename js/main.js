@@ -522,6 +522,7 @@ class PainterroProc {
           image: this.imageSaver,
           operationsDone: this.worklog.current.prevCount,
           realesedMemoryOperations: this.worklog.clearedCount,
+          selection: this.select.imagePlaced,
         });
       }
     });
