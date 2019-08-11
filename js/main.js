@@ -347,14 +347,12 @@ class PainterroProc {
       name: 'undo',
       activate: () => {
         this.worklog.undoState();
-        this.closeActiveTool();
       },
       eventListner: () => this.resizer,
     }, {
       name: 'redo',
       activate: () => {
         this.worklog.redoState();
-        this.closeActiveTool();
       },
       eventListner: () => this.resizer,
     }, {
