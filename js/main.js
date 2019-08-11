@@ -559,7 +559,6 @@ class PainterroProc {
           return;
         }
         const currentActive = this.activeTool;
-        console.log(b); // eslint-disable-line
         if (b.nonStateTool) {
           b.activate();
         } else {
