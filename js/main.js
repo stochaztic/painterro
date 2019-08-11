@@ -345,12 +345,14 @@ class PainterroProc {
       eventListner: () => this.resizer,
     }, {
       name: 'undo',
+      nonStateTool: true,
       activate: () => {
         this.worklog.undoState();
       },
       eventListner: () => this.resizer,
     }, {
       name: 'redo',
+      nonStateTool: true,
       activate: () => {
         this.worklog.redoState();
       },
@@ -557,11 +559,16 @@ class PainterroProc {
           return;
         }
         const currentActive = this.activeTool;
-        this.closeActiveTool(true);
-        if (currentActive !== b) {
-          this.setActiveTool(b);
+        console.log(b); // eslint-disable-line
+        if (b.nonStateTool) {
+          b.activate();
         } else {
-          this.setActiveTool(this.defaultTool);
+          this.closeActiveTool(true);
+          if (currentActive !== b) {
+            this.setActiveTool(b);
+          } else {
+            this.setActiveTool(this.defaultTool);
+          }
         }
       };
       this.getBtnEl(b).ontouch = this.getBtnEl(b).onclick;
