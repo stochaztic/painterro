@@ -63,6 +63,10 @@ export default {
     close: 'Close Painterro',
     eraser: 'Eraser',
     settings: 'Settings',
+    undo: 'Undo',
+    redo: 'Redo',
+    stamp: 'Stamp',
+    flood: 'Flood-fill',
   },
   pasteOptions: {
     fit: 'Replace all',
