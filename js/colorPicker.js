@@ -2,7 +2,7 @@ import { tr } from './translation';
 import { KEYS } from './utils';
 
 function HexToRGB(hex) {
-  let parse = /^#?([a-fA-F\d]{2})([a-fA-F\d]{2})([a-fA-F\d]{2})$/i.exec(hex);
+  let parse = /^#([a-fA-F\d]{2})([a-fA-F\d]{2})([a-fA-F\d]{2})$/i.exec(hex);
   if (parse) {
     return {
       r: parseInt(parse[1], 16),
@@ -10,7 +10,7 @@ function HexToRGB(hex) {
       b: parseInt(parse[3], 16),
     };
   }
-  parse = /^#?([a-fA-F\d])([a-fA-F\d])([a-fA-F\d])$/i.exec(hex);
+  parse = /^#([a-fA-F\d])([a-fA-F\d])([a-fA-F\d])$/i.exec(hex);
   if (parse) {
     return {
       r: parseInt(parse[1].repeat(2), 16),
