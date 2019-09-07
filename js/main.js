@@ -824,7 +824,9 @@ class PainterroProc {
       return;
     }
     Object.keys(this.documentHandlers).forEach((key) => {
-      this.doc.addEventListener(key, this.documentHandlers[key]);
+      if (window.PointerEvent && key.includes('touch')) return;
+      const k = window.PointerEvent ? key.replace('mouse', 'pointer') : key;
+      this.doc.addEventListener(k, this.documentHandlers[key]);
     });
 
     Object.keys(this.windowHandlers).forEach((key) => {

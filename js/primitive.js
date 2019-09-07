@@ -49,6 +49,7 @@ export default class PrimitiveTool {
         const cur = {
           x: cord[0] * scale,
           y: cord[1] * scale,
+          percent: event.pressure === undefined ? 1 : (event.pressure * 2),
         };
 
         this.points = [cur];
@@ -66,6 +67,7 @@ export default class PrimitiveTool {
 
   drawBrushPath() {
     const smPoints = this.points;
+    if (smPoints.length === 0) return;
     let lineFill;
     const origComposition = this.ctx.globalCompositeOperation;
     const isEraser = this.type === 'eraser';
@@ -76,38 +78,35 @@ export default class PrimitiveTool {
         this.ctx.globalCompositeOperation = i === 1 && bgIsTransparent ? 'destination-out' : origComposition;
         lineFill = i === 1 && bgIsTransparent ? 'rgba(0,0,0,1)' : this.main.currentBackground;
       }
-      if (smPoints.length === 1) {
+      let baseLineWidth = this.lineWidth;
+      if (isEraser) {
+        baseLineWidth = this.eraserWidth;
+      }
+      // Draw 0th point as circle
+      this.ctx.beginPath();
+      this.ctx.lineWidth = 0;
+      this.ctx.fillStyle = lineFill;
+      this.ctx.arc(
+        this.points[0].x, this.points[0].y,
+        (baseLineWidth / 2) * this.points[0].percent,
+        0, 2 * Math.PI);
+      this.ctx.fill();
+      this.ctx.closePath();
+      let last = this.points[0];
+
+      smPoints.slice(1).forEach(p => { // eslint-disable-line
         this.ctx.beginPath();
-        this.ctx.lineWidth = 0;
-        this.ctx.fillStyle = lineFill;
-        this.ctx.arc(
-          this.points[0].x, this.points[0].y,
-          this.lineWidth / 2, this.lineWidth / 2,
-          0, 2 * Math.PI);
-        this.ctx.fill();
-        this.ctx.closePath();
-      } else {
-        this.ctx.beginPath();
-        if (this.type === 'eraser') {
-          this.ctx.lineWidth = this.eraserWidth;
-        } else {
-          this.ctx.lineWidth = this.lineWidth;
-        }
         this.ctx.strokeStyle = lineFill;
         this.ctx.fillStyle = this.main.colorWidgetState.fill.alphaColor;
 
-        this.ctx.moveTo(this.points[0].x, this.points[0].y);
-        let last;
-        smPoints.slice(1).forEach((p) => {
-          this.ctx.lineTo(p.x, p.y);
-          last = p;
-        });
-        if (last) {
-          this.ctx.moveTo(last.x, last.y);
-        }
+        this.ctx.moveTo(last.x, last.y);
+        this.ctx.lineWidth = baseLineWidth * p.percent;
+        this.ctx.lineTo(p.x, p.y);
         this.ctx.stroke();
         this.ctx.closePath();
-      }
+
+        last = p;
+      });
     }
     this.ctx.globalCompositeOperation = origComposition;
   }
@@ -123,10 +122,10 @@ export default class PrimitiveTool {
       this.curCord = [this.curCord[0] * scale, this.curCord[1] * scale];
 
       if (this.type === 'brush' || this.type === 'eraser') {
-        // const prevLast = this.points.slice(-1)[0];
         const cur = {
           x: this.curCord[0],
           y: this.curCord[1],
+          percent: event.pressure === undefined ? 1 : (event.pressure * 2),
         };
         this.points.push(cur);
         this.drawBrushPath();
