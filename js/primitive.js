@@ -94,8 +94,19 @@ export default class PrimitiveTool {
       this.ctx.closePath();
       let last = this.points[0];
 
-      smPoints.slice(1).forEach(p => { // eslint-disable-line
+      this.ctx.save();
+      smPoints.slice(1).forEach((p, i) => { // eslint-disable-line
+        this.ctx.save();
         this.ctx.beginPath();
+
+        const region = new Path2D();
+        region.rect(0, 0, this.main.size.w, this.main.size.h);
+        region.arc(
+          last.x, last.y,
+          (baseLineWidth / 2) * last.percent,
+          0, 2 * Math.PI);
+        this.ctx.clip(region, 'evenodd');
+
         this.ctx.strokeStyle = lineFill;
         this.ctx.fillStyle = this.main.colorWidgetState.fill.alphaColor;
 
@@ -103,10 +114,11 @@ export default class PrimitiveTool {
         this.ctx.lineWidth = baseLineWidth * p.percent;
         this.ctx.lineTo(p.x, p.y);
         this.ctx.stroke();
-        this.ctx.closePath();
 
         last = p;
+        this.ctx.restore();
       });
+      this.ctx.restore();
     }
     this.ctx.globalCompositeOperation = origComposition;
   }
