@@ -82,43 +82,81 @@ export default class PrimitiveTool {
       if (isEraser) {
         baseLineWidth = this.eraserWidth;
       }
-      // Draw 0th point as circle
-      this.ctx.beginPath();
-      this.ctx.lineWidth = 0;
-      this.ctx.fillStyle = lineFill;
-      this.ctx.arc(
-        this.points[0].x, this.points[0].y,
-        (baseLineWidth / 2) * this.points[0].percent,
-        0, 2 * Math.PI);
-      this.ctx.fill();
-      this.ctx.closePath();
-      let last = this.points[0];
 
-      this.ctx.save();
-      smPoints.slice(1).forEach((p, i) => { // eslint-disable-line
-        this.ctx.save();
+      if (isEraser) { // Old attempt, eraser only
+        // Draw 0th point as circle
         this.ctx.beginPath();
-
-        const region = new Path2D();
-        region.rect(0, 0, this.main.size.w, this.main.size.h);
-        region.arc(
-          last.x, last.y,
-          (baseLineWidth / 2) * last.percent,
+        this.ctx.lineWidth = 0;
+        this.ctx.fillStyle = lineFill;
+        this.ctx.arc(
+          this.points[0].x, this.points[0].y,
+          (baseLineWidth / 2) * this.points[0].percent,
           0, 2 * Math.PI);
-        this.ctx.clip(region, 'evenodd');
+        this.ctx.fill();
+        this.ctx.closePath();
+        let last = this.points[0];
 
-        this.ctx.strokeStyle = lineFill;
-        this.ctx.fillStyle = this.main.colorWidgetState.fill.alphaColor;
+        this.ctx.save();
+        smPoints.slice(1).forEach((p, i) => { // eslint-disable-line
+          this.ctx.save();
+          this.ctx.beginPath();
 
-        this.ctx.moveTo(last.x, last.y);
-        this.ctx.lineWidth = baseLineWidth * p.percent;
-        this.ctx.lineTo(p.x, p.y);
-        this.ctx.stroke();
+          const region = new Path2D();
+          region.rect(0, 0, this.main.size.w, this.main.size.h);
+          region.arc(
+            last.x, last.y,
+            (baseLineWidth / 2) * last.percent,
+            0, 2 * Math.PI);
+          this.ctx.clip(region, 'evenodd');
 
-        last = p;
+          this.ctx.strokeStyle = lineFill;
+          this.ctx.fillStyle = this.main.colorWidgetState.fill.alphaColor;
+
+          this.ctx.moveTo(last.x, last.y);
+          this.ctx.lineWidth = baseLineWidth * p.percent;
+          this.ctx.lineTo(p.x, p.y);
+          this.ctx.stroke();
+
+          last = p;
+          this.ctx.restore();
+        });
         this.ctx.restore();
-      });
-      this.ctx.restore();
+      } else {
+        // Create new canvas and context
+        const newCanvas = document.createElement('canvas');
+        newCanvas.width = this.main.size.w;
+        newCanvas.height = this.main.size.h;
+        const newctx = newCanvas.getContext('2d');
+        newctx.lineCap = 'round';
+
+        // Draw 0th point as circle
+        newctx.beginPath();
+        newctx.lineWidth = 0;
+        newctx.fillStyle = 'black';
+        newctx.arc(
+          this.points[0].x, this.points[0].y,
+          (baseLineWidth / 2) * this.points[0].percent,
+          0, 2 * Math.PI);
+        newctx.fill();
+        let last = this.points[0];
+        newctx.strokeStyle = 'black';
+        newctx.fillStyle = this.main.colorWidgetState.fill.alphaColor;
+
+        smPoints.slice(1).forEach((p, i) => { // eslint-disable-line
+          newctx.beginPath();
+          newctx.moveTo(last.x, last.y);
+          newctx.lineWidth = baseLineWidth * p.percent;
+          newctx.lineTo(p.x, p.y);
+          newctx.stroke();
+
+          last = p;
+        });
+
+        newctx.fillStyle = lineFill;
+        newctx.globalCompositeOperation = 'source-in';
+        newctx.fillRect(0, 0, this.main.size.w, this.main.size.h);
+        this.ctx.drawImage(newCanvas, 0, 0);
+      }
     }
     this.ctx.globalCompositeOperation = origComposition;
   }
