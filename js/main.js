@@ -869,6 +869,15 @@ class PainterroProc {
     this.inserter.handleOpen(source);
   }
 
+  pasteInto(url) {
+    const opts = {
+      x: this.size.w / 2,
+      y: this.size.h / 2,
+      nextTool: 'brush',
+    };
+    this.inserter.handleStamp(url, opts);
+  }
+
   show(openImage) {
     this.shown = true;
     this.scrollWidth = getScrollbarWidth();

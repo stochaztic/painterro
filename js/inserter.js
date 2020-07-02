@@ -30,7 +30,8 @@ export default class Inserter {
           } else {
             this.main.select.placeAt(0, oldH, 0, 0, img);
           }
-          this.worklog.captureState();
+          this.main.setToolEnabled(this.main.toolByName.undo, false);
+          this.main.setToolEnabled(this.main.toolByName.redo, false);
         },
       },
       extend_right: {
@@ -52,7 +53,8 @@ export default class Inserter {
           } else {
             this.main.select.placeAt(oldW, 0, 0, 0, img);
           }
-          this.worklog.captureState();
+          this.main.setToolEnabled(this.main.toolByName.undo, false);
+          this.main.setToolEnabled(this.main.toolByName.redo, false);
         },
       },
       paste_over: {
@@ -75,7 +77,8 @@ export default class Inserter {
             const newW = oldH * (img.naturalWidth / img.naturalHeight);
             this.main.select.placeAt(0, 0, oldW - newW, 0, img);
           }
-          this.worklog.captureState();
+          this.main.setToolEnabled(this.main.toolByName.undo, false);
+          this.main.setToolEnabled(this.main.toolByName.redo, false);
           this.main.select.nextTool = opts.nextTool;
         },
       },
@@ -108,7 +111,7 @@ export default class Inserter {
 
   insert(x, y, w, h) {
     this.main.ctx.drawImage(this.tmpImg, x, y, w, h);
-    this.main.worklog.reCaptureState();
+    this.main.worklog.captureState();
   }
 
   cancelChoosing() {
