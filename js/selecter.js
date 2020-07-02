@@ -28,6 +28,10 @@ export default class PainterroSelecter {
   activate() {
     this.area.activated = true;
     this.areaionCallback(false);
+    this.area.resizingT = false;
+    this.area.resizingR = false;
+    this.area.resizingB = false;
+    this.area.resizingL = false;
   }
 
   doCrop() {
@@ -194,6 +198,7 @@ ${Math.round(pxData[i][j][3] / s)})`;
     this.main.select.area.rect.style['background-image'] = 'none';
     this.hide();
     this.main.worklog.undoState();
+    this.main.worklog.redoState(); // hack for changed paste/stamp undo functionality
     this.nextToolCheck();
   }
 
