@@ -442,6 +442,11 @@ class PainterroProc {
     const cropper = '<div class="ptro-crp-el">' +
       `${PainterroSelecter.code()}${TextTool.code()}</div>`;
 
+    let footerImage = null;
+    if (this.params.footerUrl) {
+      footerImage = `<img class="ptro-footerimage" src="${this.params.footerUrl}" style="width: 100%; height: ${this.params.footerHeight}px; object-position: top; object-fit: cover;">`;
+    }
+
     this.loadedName = '';
     this.doc = document;
     this.wrapper = this.doc.createElement('div');
@@ -453,6 +458,7 @@ class PainterroProc {
           '<div class="ptro-center-tablecell">' +
             `<canvas id="${this.id}-canvas"></canvas>` +
             `<div class="ptro-substrate"></div>${cropper}` +
+            `${footerImage}` +
           '</div>' +
         '</div>' +
       `</div>${
