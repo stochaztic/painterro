@@ -46,10 +46,11 @@ export default class PrimitiveTool {
           (event.clientX - this.main.elLeft()) + this.main.scroller.scrollLeft,
           (event.clientY - this.main.elTop()) + this.main.scroller.scrollTop,
         ];
+        const noPressure = event.pressure === undefined || event.pressure < 0.001;
         const cur = {
           x: cord[0] * scale,
           y: cord[1] * scale,
-          percent: event.pressure === undefined ? 1 : (event.pressure * 2),
+          percent: noPressure ? 1 : (event.pressure * 2),
         };
 
         this.points = [cur];
@@ -172,10 +173,11 @@ export default class PrimitiveTool {
       this.curCord = [this.curCord[0] * scale, this.curCord[1] * scale];
 
       if (this.type === 'brush' || this.type === 'eraser') {
+        const noPressure = event.pressure === undefined || event.pressure < 0.001;
         const cur = {
           x: this.curCord[0],
           y: this.curCord[1],
-          percent: event.pressure === undefined ? 1 : (event.pressure * 2),
+          percent: noPressure ? 1 : (event.pressure * 2),
         };
         this.points.push(cur);
         this.drawBrushPath();

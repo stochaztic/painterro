@@ -442,7 +442,7 @@ class PainterroProc {
     const cropper = '<div class="ptro-crp-el">' +
       `${PainterroSelecter.code()}${TextTool.code()}</div>`;
 
-    let footerImage = null;
+    let footerImage = '';
     if (this.params.footerUrl) {
       footerImage = `<img class="ptro-footerimage" src="${this.params.footerUrl}" style="width: 100%; height: ${this.params.footerHeight}px; object-position: top; object-fit: cover;">`;
     }
