@@ -128,6 +128,31 @@ export default class Inserter {
     }
   }
 
+  handleInsert(src, opts = {}) {
+    const handleIt = (source) => {
+      const img = new Image();
+      img.onload = () => {
+        this.main.ctx.drawImage(img, opts.x || 0, opts.y || 0,
+          opts.w || img.width, opts.h || img.height);
+        if (opts.canUndo) {
+          this.main.worklog.captureState();
+        } else {
+          this.main.worklog.reCaptureState();
+        }
+      };
+      img.src = source;
+    };
+
+    if (src.indexOf('data') !== 0) {
+      imgToDataURL(src, (dataUrl) => { // if CORS will not allow,
+        // better see error in console than have different canvas mode
+        handleIt(dataUrl);
+      });
+    } else {
+      handleIt(src);
+    }
+  }
+
   handleStamp(src, opts = {}) {
     this.startLoading();
     const handleIt = (source) => {

@@ -884,6 +884,10 @@ class PainterroProc {
     this.inserter.handleStamp(url, opts);
   }
 
+  insertInto(url, opts) {
+    this.inserter.handleInsert(url, opts);
+  }
+
   show(openImage) {
     this.shown = true;
     this.scrollWidth = getScrollbarWidth();

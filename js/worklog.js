@@ -80,9 +80,7 @@ export default class WorkLog {
   }
 
   reCaptureState() {
-    if (this.current.prev !== null) {
-      this.current = this.current.prev;
-    }
+    this.current = this.current.prev;
     this.captureState();
   }
 
