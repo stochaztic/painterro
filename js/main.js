@@ -13,7 +13,7 @@ import ColorPicker from './colorPicker';
 import { setDefaults, setParam, logError } from './params';
 import { tr } from './translation';
 import ZoomHelper from './zoomHelper';
-import TextTool from './text';
+import EmojiTool from './emoji';
 import StampTool from './stamp';
 import FloodTool from './flood';
 import Resizer from './resizer';
@@ -241,79 +241,22 @@ class PainterroProc {
       },
       eventListner: () => this.stampTool,
     }, {
-      name: 'text',
+      name: 'emoji',
       controls: [
+        this.controlBuilder.buildFontSizeControl(0),
         {
-          type: 'color',
-          title: 'textColor',
-          titleFull: 'textColorFull',
-          target: 'line',
+          type: 'btn',
+          name: 'Change',
+          hint: 'Change Emoji',
           action: () => {
-            this.colorPicker.open(this.colorWidgetState.line, (c) => {
-              this.textTool.setFontColor(c.alphaColor);
-            });
+            this.emojiTool.changeEmoji();
           },
-        }, this.controlBuilder.buildFontSizeControl(1),
-        {
-          type: 'dropdown',
-          title: 'fontName',
-          titleFull: 'fontNameFull',
-          target: 'fontName',
-          action: () => {
-            const dropdown = document.getElementById(this.activeTool.controls[2].id);
-            const font = dropdown.value;
-            this.textTool.setFont(font);
-          },
-          getValue: () => this.textTool.getFont(),
-          getAvailableValues: () => TextTool.getFonts(),
-        }, {
-          type: 'dropdown',
-          title: 'fontStyle',
-          titleFull: 'fontStyleFull',
-          target: 'fontStyle',
-          action: () => {
-            const dropdown = document.getElementById(this.activeTool.controls[3].id);
-            const style = dropdown.value;
-            this.textTool.setFontStyle(style);
-          },
-          getValue: () => this.textTool.getFontStyle(),
-          getAvailableValues: () => TextTool.getFontStyles(),
         },
-        // {
-        //   type: 'int',
-        //   title: 'fontStrokeSize',
-        //   titleFull: 'fontStrokeSizeFull',
-        //   target: 'fontStrokeSize',
-        //   min: 0,
-        //   max: 200,
-        //   action: () => {
-        //     const inp = document.getElementById(this.activeTool.controls[4].id).value;
-        //     this.textTool.setFontStrokeSize(inp);
-        //     setParam('fontStrokeSize', inp);
-        //   },
-        //   getValue: () => this.textTool.fontStrokeSize,
-        // },
-        // {
-        //   type: 'color',
-        //   title: 'textStrokeColor',
-        //   titleFull: 'textStrokeColorFull',
-        //   target: 'stroke',
-        //   action: () => {
-        //     this.colorPicker.open(this.colorWidgetState.stroke, (c) => {
-        //       this.textTool.setStrokeColor(c.alphaColor);
-        //     });
-        //   },
-        // },
       ],
       activate: () => {
-        this.textTool.setFontColor(this.colorWidgetState.line.alphaColor);
-        // this.textTool.setStrokeColor(this.colorWidgetState.stroke.alphaColor);
         this.toolContainer.style.cursor = 'crosshair';
       },
-      close: () => {
-        this.textTool.close();
-      },
-      eventListner: () => this.textTool,
+      eventListner: () => this.emojiTool,
     }, {
       name: 'rotate',
       activate: () => {
@@ -440,7 +383,7 @@ class PainterroProc {
     this.inserter = Inserter.get();
 
     const cropper = '<div class="ptro-crp-el">' +
-      `${PainterroSelecter.code()}${TextTool.code()}</div>`;
+      `${PainterroSelecter.code()}</div>`;
 
     let footerImage = '';
     if (this.params.footerUrl) {
@@ -473,7 +416,7 @@ class PainterroProc {
     this.bar.id = `${this.id}-bar`;
     this.bar.className = 'ptro-bar ptro-color-main';
     this.bar.innerHTML =
-      `<div><span>${bar}</span>` +
+      `<div><span class="ptro-bar-left">${bar}</span>` +
       '<span class="tool-controls"></span>' +
       `<span class="ptro-bar-right">${rightBar}</span>` +
       '<span class="ptro-info"></span>' +
@@ -533,7 +476,7 @@ class PainterroProc {
       }
     });
     this.inserter.init(this);
-    this.textTool = new TextTool(this);
+    this.emojiTool = new EmojiTool(this);
     this.stampTool = new StampTool(this, params.stamps);
     this.floodTool = new FloodTool(this);
     this.colorPicker = new ColorPicker(this, (widgetState) => {
@@ -1055,7 +998,7 @@ class PainterroProc {
         ctrls += `<span class="ptro-tool-ctl-name" title="${tr(ctl.titleFull)}">${tr(ctl.title)}</span>`;
       }
       if (ctl.type === 'btn') {
-        ctrls += `<button type="button" ${ctl.hint ? `title="${tr(ctl.hint)}"` : ''} class="ptro-color-control ${ctl.icon ? 'ptro-icon-btn' : 'ptro-named-btn'}" ` +
+        ctrls += `<button type="button" ${ctl.hint ? `title="${ctl.hint}"` : ''} class="ptro-color-control ${ctl.icon ? 'ptro-icon-btn' : 'ptro-named-btn'}" ` +
           `id=${ctl.id}>${ctl.icon ? `<i class="ptro-icon ptro-icon-${ctl.icon}"></i>` : ''}` +
           `<p>${ctl.name || ''}</p></button>`;
       } else if (ctl.type === 'color') {

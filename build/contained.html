@@ -39,7 +39,7 @@
             defaultTool: 'brush',
             backgroundFillColor: "#ffffff",
             backgroundFillColorAlpha: 1.0,
-            hiddenTools: ['select', 'crop', 'arrow', 'text', 'resize', 'rotate', 'pixelize', 'save', 'open', 'close'],
+            hiddenTools: ['select', 'crop', 'arrow', 'emoji', 'resize', 'rotate', 'pixelize', 'save', 'open', 'close'],
             how_to_paste_actions: ['paste_over'],
         });
         p.show();
@@ -48,21 +48,22 @@
 -->
 <script>
 
-  Painterro({
+  window.p1 = Painterro({
     activeColor: '#00ff00', // default brush color is green
     defaultTool: 'brush',
     backgroundFillColor: "#ffffff",
     backgroundFillColorAlpha: 1.0,
-    hiddenTools: ['select', 'crop', 'arrow', 'text', 'resize', 'rotate', 'pixelize', 'save', 'open', 'close', 'settings'],
+    hiddenTools: ['select', 'crop', 'arrow', 'resize', 'rotate', 'pixelize', 'save', 'open', 'close', 'settings'],
     id: 'container',
+   defaultFontSize: 60,
   }).show();
 
-  Painterro({
+  window.p2 = Painterro({
     activeColor: '#00ff00', // default brush color is green
     defaultTool: 'brush',
     backgroundFillColor: "#ffffff",
     backgroundFillColorAlpha: 1.0,
-    hiddenTools: ['select', 'crop', 'arrow', 'text', 'resize', 'rotate', 'pixelize', 'save', 'open', 'close', 'settings'],
+    hiddenTools: ['select', 'crop', 'arrow', 'resize', 'rotate', 'pixelize', 'save', 'open', 'close', 'settings'],
     id: 'container2',
   }).show();
 </script>

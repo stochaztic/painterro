@@ -66,6 +66,7 @@ export default {
     undo: 'Undo',
     redo: 'Redo',
     stamp: 'Stamp',
+    emoji: 'Emoji',
     flood: 'Flood-fill',
   },
   pasteOptions: {

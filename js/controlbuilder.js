@@ -9,10 +9,10 @@ export default class ControlBuilder {
     const action = () => {
       const fontSize =
         document.getElementById(this.main.activeTool.controls[controlIndex].id).value;
-      this.main.textTool.setFontSize(fontSize);
+      this.main.emojiTool.setFontSize(fontSize);
       setParam('defaultFontSize', fontSize);
     };
-    const getValue = () => this.main.textTool.fontSize;
+    const getValue = () => this.main.emojiTool.fontSize;
 
     if (this.main.params.availableFontSizes) {
       return ControlBuilder.buildDropDownControl('fontSize', action, getValue, this.main.params.availableFontSizes);
