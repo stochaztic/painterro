@@ -78,35 +78,35 @@ export default class Settings {
   }
 
   static html() {
-    return '' +
-      '<div class="ptro-settings-widget-wrapper ptro-common-widget-wrapper ptro-v-middle" hidden>' +
-        '<div class="ptro-settings-widget ptro-color-main ptro-v-middle-in">' +
-            '<table style="margin-top: 5px">' +
-              '<tr>' +
-                `<td class="ptro-label ptro-resize-table-left" style="height:30px;">${tr('backgroundColor')}</td>` +
-                '<td class="ptro-strict-cell">' +
-                  '<button type="button" data-id="bg" class="ptro-color-btn ptro-bordered-btn" ' +
-                    'style="margin-top: -12px;"></button>' +
-                  '<span class="ptro-btn-color-checkers"></span>' +
-                '</td>' +
-                '<td>' +
-                  `<button type="button" style="margin-top: -2px;" class="ptro-named-btn ptro-clear ptro-color-control" title="${tr('fillPageWith')}">${tr('clear')}</button>` +
-                '</td>' +
-              '</tr>' +
-              '<tr>' +
-                `<td class="ptro-label ptro-resize-table-left" >${tr('pixelizePixelSize')}</td>` +
-                '<td colspan="2">' +
-                  '<input class="ptro-input ptro-pixel-size-input" pattern="[0-9]{1,}%?" type="text" />' +
-                '</td>' +
-              '</tr>' +
-            '</table>' +
-            '<div class="ptro-error" hidden></div>' +
-            '<div style="margin-top: 20px">' +
-              '<button type="button" class="ptro-named-btn ptro-apply ptro-color-control">' +
-                    `${tr('apply')}</button>` +
-              `<button type="button" class="ptro-named-btn ptro-close ptro-color-control">${tr('cancel')}</button>` +
-            '</div>' +
-        '</div>' +
-      '</div>';
+    return ''
+      + '<div class="ptro-settings-widget-wrapper ptro-common-widget-wrapper ptro-v-middle" hidden>'
+        + '<div class="ptro-settings-widget ptro-color-main ptro-v-middle-in">'
+            + '<table style="margin-top: 5px">'
+              + '<tr>'
+                + `<td class="ptro-label ptro-resize-table-left" style="height:30px;">${tr('backgroundColor')}</td>`
+                + '<td class="ptro-strict-cell">'
+                  + '<button type="button" data-id="bg" class="ptro-color-btn ptro-bordered-btn" '
+                    + 'style="margin-top: -12px;"></button>'
+                  + '<span class="ptro-btn-color-checkers"></span>'
+                + '</td>'
+                + '<td>'
+                  + `<button type="button" style="margin-top: -2px;" class="ptro-named-btn ptro-clear ptro-color-control" title="${tr('fillPageWith')}">${tr('clear')}</button>`
+                + '</td>'
+              + '</tr>'
+              + '<tr>'
+                + `<td class="ptro-label ptro-resize-table-left" >${tr('pixelizePixelSize')}</td>`
+                + '<td colspan="2">'
+                  + '<input class="ptro-input ptro-pixel-size-input" pattern="[0-9]{1,}%?" type="text" />'
+                + '</td>'
+              + '</tr>'
+            + '</table>'
+            + '<div class="ptro-error" hidden></div>'
+            + '<div style="margin-top: 20px">'
+              + '<button type="button" class="ptro-named-btn ptro-apply ptro-color-control">'
+                    + `${tr('apply')}</button>`
+              + `<button type="button" class="ptro-named-btn ptro-close ptro-color-control">${tr('cancel')}</button>`
+            + '</div>'
+        + '</div>'
+      + '</div>';
   }
 }

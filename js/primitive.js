@@ -1,4 +1,3 @@
-
 export default class PrimitiveTool {
   constructor(main) {
     this.ctx = main.ctx;
@@ -92,7 +91,8 @@ export default class PrimitiveTool {
         this.ctx.arc(
           this.points[0].x, this.points[0].y,
           (baseLineWidth / 2) * this.points[0].percent,
-          0, 2 * Math.PI);
+          0, 2 * Math.PI,
+        );
         this.ctx.fill();
         this.ctx.closePath();
         let last = this.points[0];
@@ -107,7 +107,8 @@ export default class PrimitiveTool {
           region.arc(
             last.x, last.y,
             (baseLineWidth / 2) * last.percent,
-            0, 2 * Math.PI);
+            0, 2 * Math.PI,
+          );
           this.ctx.clip(region, 'evenodd');
 
           this.ctx.strokeStyle = lineFill;
@@ -137,7 +138,8 @@ export default class PrimitiveTool {
         newctx.arc(
           this.points[0].x, this.points[0].y,
           (baseLineWidth / 2) * this.points[0].percent,
-          0, 2 * Math.PI);
+          0, 2 * Math.PI,
+        );
         newctx.fill();
         let last = this.points[0];
         newctx.strokeStyle = 'black';
@@ -223,7 +225,7 @@ export default class PrimitiveTool {
         if (this.curCord[0] < this.centerCord[0]) {
           deg = (180 + deg);
         }
-        const arrowLength = this.arrowLength;
+        const { arrowLength } = this;
         const arrowAngle = this.main.params.defaultArrowAngle;
         const arrow = [
           [
@@ -263,7 +265,8 @@ export default class PrimitiveTool {
         const oddCorrecter = this.lineWidth % 2;
         this.ctx.rect(
           tl[0] + halfLW, tl[1] + halfLW,
-          (w - this.lineWidth) + oddCorrecter, (h - this.lineWidth) + oddCorrecter);
+          (w - this.lineWidth) + oddCorrecter, (h - this.lineWidth) + oddCorrecter,
+        );
         this.ctx.fill();
         this.ctx.strokeRect(tl[0], tl[1], w, h);
         this.ctx.closePath();
@@ -303,7 +306,8 @@ export default class PrimitiveTool {
         this.ctx.arc(
           (tlX + hR) * xScale,
           (tlY + vR) * yScale,
-          radius, 0, 2 * Math.PI);
+          radius, 0, 2 * Math.PI,
+        );
         this.ctx.restore();
         this.ctx.fill();
         this.ctx.stroke();

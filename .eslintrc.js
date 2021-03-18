@@ -11,15 +11,15 @@ module.exports = {
   extends: 'airbnb-base',
   // check if imports actually resolve
   'settings': {
-    'import/resolver': {
-      'webpack': {
-        'config': 'webpack.config.js'
-      }
-    }
+    // 'import/resolver': {
+    //   'webpack': {
+    //     'config': 'webpack.config.js'
+    //   }
+    // }
   },
   // add your custom rules here
   'rules': {
-    'linebreak-style': 0,
+    'prefer-destructuring': 0,
     'no-param-reassign': ["error", { "props": false }],
     'no-console': ["error", { allow: ["warn", "error"] }],
      // allow debugger during development

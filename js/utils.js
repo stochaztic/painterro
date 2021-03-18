@@ -116,7 +116,6 @@ export function copyToClipboard(text) {
   }
 }
 
-
 export function getScrollbarWidth() {
   const outer = document.createElement('div');
   outer.style.visibility = 'hidden';

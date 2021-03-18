@@ -46,8 +46,8 @@ export default class ColorPicker {
     this.main = main;
     this.w = 180;
     this.h = 150;
-    const w = this.w;
-    const h = this.h;
+    const { w } = this;
+    const { h } = this;
     this.lightPosition = this.w - 1;
     this.wrapper = main.wrapper.querySelector('.ptro-color-widget-wrapper');
     this.input = main.wrapper.querySelector('.ptro-color-widget-wrapper .ptro-color');
@@ -206,12 +206,12 @@ export default class ColorPicker {
       }
     } else if (this.choosingActive) {
       const scale = this.main.getScale();
-      let x = ((e.clientX - this.main.elLeft()) +
-        this.main.scroller.scrollLeft) * scale;
+      let x = ((e.clientX - this.main.elLeft())
+        + this.main.scroller.scrollLeft) * scale;
       x = (x < 1 && 1) || x;
       x = (x > this.main.size.w - 1 && this.main.size.w - 1) || x;
-      let y = ((e.clientY - this.main.elTop()) +
-        this.main.scroller.scrollTop) * scale;
+      let y = ((e.clientY - this.main.elTop())
+        + this.main.scroller.scrollTop) * scale;
       y = (y < 1 && 1) || y;
       y = (y > this.main.size.h - 1 && this.main.size.h - 1) || y;
       const p = this.main.ctx.getImageData(x, y, 1, 1).data;
@@ -277,26 +277,26 @@ export default class ColorPicker {
   }
 
   static html() {
-    return '' +
-      '<div class="ptro-color-widget-wrapper ptro-common-widget-wrapper ptro-v-middle" hidden>' +
-        '<div class="ptro-pallet ptro-color-main ptro-v-middle-in">' +
-          '<canvas></canvas>' +
-          '<canvas class="ptro-canvas-light"></canvas>' +
-          '<span class="ptro-color-light-regulator ptro-bordered-control"></span>' +
-          '<canvas class="ptro-canvas-alpha"></canvas>' +
-          '<span class="alpha-checkers"></span>' +
-          '<span class="ptro-color-alpha-regulator ptro-bordered-control"></span>' +
-          '<div class="ptro-colors"></div>' +
-          '<div class="ptro-color-edit">' +
-            '<button type="button" class="ptro-icon-btn ptro-pipette ptro-color-control" style="float: left; margin-right: 5px">' +
-              '<i class="ptro-icon ptro-icon-pipette"></i>' +
-            '</button>' +
-            '<input class="ptro-input ptro-color" type="text" size="7"/>' +
-            '<button type="button" class="ptro-named-btn ptro-close-color-picker ptro-color-control" >' +
-            `${tr('close')}</button>` +
-          '</div>' +
-        '</div>' +
-      '</div>';
+    return ''
+      + '<div class="ptro-color-widget-wrapper ptro-common-widget-wrapper ptro-v-middle" hidden>'
+        + '<div class="ptro-pallet ptro-color-main ptro-v-middle-in">'
+          + '<canvas></canvas>'
+          + '<canvas class="ptro-canvas-light"></canvas>'
+          + '<span class="ptro-color-light-regulator ptro-bordered-control"></span>'
+          + '<canvas class="ptro-canvas-alpha"></canvas>'
+          + '<span class="alpha-checkers"></span>'
+          + '<span class="ptro-color-alpha-regulator ptro-bordered-control"></span>'
+          + '<div class="ptro-colors"></div>'
+          + '<div class="ptro-color-edit">'
+            + '<button type="button" class="ptro-icon-btn ptro-pipette ptro-color-control" style="float: left; margin-right: 5px">'
+              + '<i class="ptro-icon ptro-icon-pipette"></i>'
+            + '</button>'
+            + '<input class="ptro-input ptro-color" type="text" size="7"/>'
+            + '<button type="button" class="ptro-named-btn ptro-close-color-picker ptro-color-control" >'
+            + `${tr('close')}</button>`
+          + '</div>'
+        + '</div>'
+      + '</div>';
   }
 
   drawLighter() {

@@ -3,7 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 require('es6-promise').polyfill();
 
-function webpackConfig(target) {
+function webpackConfig(target, mode) {
   let filename;
   if (target === 'var') {
     filename = `painterro-${require("./package.json").version}.min.js`
@@ -14,7 +14,8 @@ function webpackConfig(target) {
     filename = `painterro.${target}.js`
   }
 
-  return {
+  let options = {
+    mode,
     entry: './js/main.js',
     output: {
       path: path.resolve(__dirname, 'build'),
@@ -23,18 +24,22 @@ function webpackConfig(target) {
       libraryTarget: target
     },
     module: {
-      loaders: [
+      rules: [
         {
           enforce: "pre",
           test: /\.js$/,
           exclude: /node_modules/,
           loader: "eslint-loader",
+          options: {
+            fix: true,
+          },
         },
         {
           test: /\.js$/,
           loader: 'babel-loader',
-          query: {
-            presets: ['es2015']
+          options: {
+            // sourceType: "module",
+            presets: [['@babel/env', { "modules": "commonjs" }]],
           }
         },
         {
@@ -55,24 +60,33 @@ function webpackConfig(target) {
     },
 
     devtool: 'source-map',
-    devServer: {
-      disableHostCheck: true
+  }
+  
+  if (mode === 'development') {
+    options = {
+      ...options,
+      devServer: {
+        injectClient: false,
+        static: path.join(__dirname, 'build'),
+        hot: true,
+      },
     }
   }
+  return options;
 }
 
-const isDevServer = process.argv.find(v => v.includes('webpack-dev-server'));
+const isDevServer = process.argv.find(v => v.includes('serve'));
 
 if (!isDevServer) {
+  console.log('Building production');
   module.exports = [
-    webpackConfig('var'),
-    webpackConfig('var-latest'),
-    webpackConfig('commonjs2'),
-    webpackConfig('amd'),
-    webpackConfig('umd')
+    webpackConfig('var', 'production'),
+    webpackConfig('var-latest', 'production'),
+    webpackConfig('commonjs2', 'production'),
+    webpackConfig('amd', 'production'),
+    webpackConfig('umd', 'production')
   ];
 } else {
-  module.exports = [
-    webpackConfig('var-latest'),
-  ];
+  console.log('Building development');
+  module.exports = [webpackConfig('var-latest', 'development')];
 }

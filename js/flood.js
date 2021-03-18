@@ -30,15 +30,15 @@ export default class FloodTool {
 
   static matchColorFromData(imageData, i, color, tolerance) {
     if (tolerance <= 1) {
-      return imageData[i] === color[0] &&
-        imageData[i + 1] === color[1] &&
-        imageData[i + 2] === color[2] &&
-        imageData[i + 3] === color[3];
+      return imageData[i] === color[0]
+        && imageData[i + 1] === color[1]
+        && imageData[i + 2] === color[2]
+        && imageData[i + 3] === color[3];
     }
-    const diff = Math.abs(imageData[i] - color[0]) +
-      Math.abs(imageData[i + 1] - color[1]) +
-      Math.abs(imageData[i + 2] - color[2]) +
-      Math.abs(imageData[i + 3] - color[3]);
+    const diff = Math.abs(imageData[i] - color[0])
+      + Math.abs(imageData[i + 1] - color[1])
+      + Math.abs(imageData[i + 2] - color[2])
+      + Math.abs(imageData[i + 3] - color[3]);
     return diff <= (tolerance);
   }
 
@@ -59,8 +59,8 @@ export default class FloodTool {
   doFlood(opts) {
     const oldImageData = this.ctx.getImageData(0, 0, this.main.size.w, this.main.size.h);
     const newCanvas = document.createElement('canvas');
-    const width = oldImageData.width;
-    const height = oldImageData.height;
+    const { width } = oldImageData;
+    const { height } = oldImageData;
     const oldData = oldImageData.data;
     newCanvas.width = width;
     newCanvas.height = height;
@@ -107,31 +107,31 @@ export default class FloodTool {
       testindex = nindex;
       runningLeft = false;
       runningRight = false;
-      while (testy < height &&
-        FloodTool.matchColorFromData(oldData, testindex, oldColor, opts.tolerance)) {
+      while (testy < height
+        && FloodTool.matchColorFromData(oldData, testindex, oldColor, opts.tolerance)) {
         // test left
         if (nx > 0) {
-          if (!runningLeft &&
-            FloodTool.matchColorFromData(oldData, testindex - 4, oldColor, opts.tolerance)
+          if (!runningLeft
+            && FloodTool.matchColorFromData(oldData, testindex - 4, oldColor, opts.tolerance)
             && FloodTool.emptyAt(createdDict[nx - 1], testy)) {
             runningLeft = true;
             pointStack.push(nx - 1);
             pointStack.push(testy);
-          } else if (runningLeft &&
-              !FloodTool.matchColorFromData(oldData, testindex - 4, oldColor, opts.tolerance)) {
+          } else if (runningLeft
+              && !FloodTool.matchColorFromData(oldData, testindex - 4, oldColor, opts.tolerance)) {
             runningLeft = false;
           }
         }
         // test right
         if (nx < width - 1) {
-          if (!runningRight &&
-            FloodTool.matchColorFromData(oldData, testindex + 4, oldColor, opts.tolerance)
+          if (!runningRight
+            && FloodTool.matchColorFromData(oldData, testindex + 4, oldColor, opts.tolerance)
             && FloodTool.emptyAt(createdDict[nx + 1], testy)) {
             runningRight = true;
             pointStack.push(nx + 1);
             pointStack.push(testy);
-          } else if (runningRight &&
-            !FloodTool.matchColorFromData(oldData, testindex + 4, oldColor, opts.tolerance)) {
+          } else if (runningRight
+            && !FloodTool.matchColorFromData(oldData, testindex + 4, oldColor, opts.tolerance)) {
             runningRight = false;
           }
         }

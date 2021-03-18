@@ -16,7 +16,7 @@ export default class StampTool {
     this.stamp = stamp;
   }
 
-  handleMouseDown() {
+  handleMouseDown(event) {
     const mainClass = event.target.classList[0];
     if (mainClass === 'ptro-crp-el') {
       const opts = {

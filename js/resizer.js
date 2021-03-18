@@ -67,7 +67,7 @@ export default class Resizer {
     this.inputW.oninput = () => {
       this.newW = +this.inputW.value;
       if (this.linked) {
-        const ratio = this.main.size.ratio;
+        const { ratio } = this.main.size;
         this.newH = Math.round(this.newW / ratio);
         this.inputH.value = this.newH;
       }
@@ -75,7 +75,7 @@ export default class Resizer {
     this.inputH.oninput = () => {
       this.newH = +this.inputH.value;
       if (this.linked) {
-        const ratio = this.main.size.ratio;
+        const { ratio } = this.main.size;
         this.newW = Math.round(this.newH * ratio);
         this.inputW.value = +this.newW;
       }
@@ -107,40 +107,40 @@ export default class Resizer {
   }
 
   static html() {
-    return '' +
-      '<div class="ptro-resize-widget-wrapper ptro-common-widget-wrapper ptro-v-middle" hidden>' +
-        '<div class="ptro-resize-widget ptro-color-main ptro-v-middle-in">' +
-          '<div style="display: inline-block">' +
-            '<table>' +
-              '<tr>' +
-                `<td class="ptro-label ptro-resize-table-left">${tr('width')}</td>` +
-                '<td>' +
-                  '<input class="ptro-input ptro-resize-width-input" type="number" min="0" max="3000" step="1"/>' +
-                '</td>' +
-              '</tr>' +
-              '<tr>' +
-                `<td class="ptro-label ptro-resize-table-left">${tr('height')}</td>` +
-                '<td>' +
-                  '<input class="ptro-input ptro-resize-heigth-input" type="number" min="0" max="3000" step="1"/>' +
-                '</td>' +
-              '</tr>' +
-            '</table>' +
-          '</div>' +
-          '<div class="ptro-resize-link-wrapper">' +
-            `<button type="button" class="ptro-icon-btn ptro-link ptro-color-control" title="${tr('keepRatio')}">` +
-              '<i class="ptro-icon ptro-icon-linked" style="font-size: 18px;"></i>' +
-            '</button>' +
-          '</div>' +
-          '<div></div>' +
-          '<div style="margin-top: 40px;">' +
-            '<button type="button" class="ptro-named-btn ptro-resize ptro-color-control">' +
-                  `${tr('resizeResize')}</button>` +
-            '<button type="button" class="ptro-named-btn ptro-scale ptro-color-control">' +
-                  `${tr('resizeScale')}</button>` +
-            '<button type="button" class="ptro-named-btn ptro-close ptro-color-control">' +
-                  `${tr('cancel')}</button>` +
-          '</div>' +
-        '</div>' +
-      '</div>';
+    return ''
+      + '<div class="ptro-resize-widget-wrapper ptro-common-widget-wrapper ptro-v-middle" hidden>'
+        + '<div class="ptro-resize-widget ptro-color-main ptro-v-middle-in">'
+          + '<div style="display: inline-block">'
+            + '<table>'
+              + '<tr>'
+                + `<td class="ptro-label ptro-resize-table-left">${tr('width')}</td>`
+                + '<td>'
+                  + '<input class="ptro-input ptro-resize-width-input" type="number" min="0" max="3000" step="1"/>'
+                + '</td>'
+              + '</tr>'
+              + '<tr>'
+                + `<td class="ptro-label ptro-resize-table-left">${tr('height')}</td>`
+                + '<td>'
+                  + '<input class="ptro-input ptro-resize-heigth-input" type="number" min="0" max="3000" step="1"/>'
+                + '</td>'
+              + '</tr>'
+            + '</table>'
+          + '</div>'
+          + '<div class="ptro-resize-link-wrapper">'
+            + `<button type="button" class="ptro-icon-btn ptro-link ptro-color-control" title="${tr('keepRatio')}">`
+              + '<i class="ptro-icon ptro-icon-linked" style="font-size: 18px;"></i>'
+            + '</button>'
+          + '</div>'
+          + '<div></div>'
+          + '<div style="margin-top: 40px;">'
+            + '<button type="button" class="ptro-named-btn ptro-resize ptro-color-control">'
+                  + `${tr('resizeResize')}</button>`
+            + '<button type="button" class="ptro-named-btn ptro-scale ptro-color-control">'
+                  + `${tr('resizeScale')}</button>`
+            + '<button type="button" class="ptro-named-btn ptro-close ptro-color-control">'
+                  + `${tr('cancel')}</button>`
+          + '</div>'
+        + '</div>'
+      + '</div>';
   }
 }

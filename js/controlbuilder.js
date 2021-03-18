@@ -7,8 +7,8 @@ export default class ControlBuilder {
 
   buildFontSizeControl(controlIndex) {
     const action = () => {
-      const fontSize =
-        document.getElementById(this.main.activeTool.controls[controlIndex].id).value;
+      const font = document.getElementById(this.main.activeTool.controls[controlIndex].id);
+      const fontSize = font.value;
       this.main.emojiTool.setFontSize(fontSize);
       setParam('defaultFontSize', fontSize);
     };
@@ -47,6 +47,7 @@ export default class ControlBuilder {
     }
     return ControlBuilder.buildInputControl('lineWidth', action, getValue, 1, 99);
   }
+
   buildArrowLengthControl(controlIndex) {
     const action = () => {
       const width = document.getElementById(this.main.activeTool.controls[controlIndex].id).value;
@@ -83,8 +84,8 @@ export default class ControlBuilder {
       action,
       getValue,
       getAvailableValues: () => availableValues.map(
-        x => ({ value: x, name: x.toString(), title: x.toString() })),
+        (x) => ({ value: x, name: x.toString(), title: x.toString() }),
+      ),
     };
   }
 }
-

@@ -69,7 +69,8 @@ export default class Inserter {
             this.main.select.placeAt(
               x, y,
               (oldW - img.naturalWidth) - x,
-              (oldH - img.naturalHeight) - y, img);
+              (oldH - img.naturalHeight) - y, img,
+            );
           } else if (img.naturalWidth / img.naturalHeight > oldW / oldH) {
             const newH = oldW * (img.naturalHeight / img.naturalWidth);
             this.main.select.placeAt(0, 0, 0, oldH - newH, img);
@@ -269,14 +270,14 @@ export default class Inserter {
     Object.keys(this.pasteOptions).forEach((k) => {
       const o = this.pasteOptions[k];
       o.id = genId();
-      buttons += `<button type="button" id="${o.id}" class="ptro-selector-btn ptro-color-control">` +
-        `<div><i class="ptro-icon ptro-icon-paste_${o.internalName}"></i></div>` +
-        `<div>${tr(`pasteOptions.${o.internalName}`)}</div>` +
-      '</button>';
+      buttons += `<button type="button" id="${o.id}" class="ptro-selector-btn ptro-color-control">`
+        + `<div><i class="ptro-icon ptro-icon-paste_${o.internalName}"></i></div>`
+        + `<div>${tr(`pasteOptions.${o.internalName}`)}</div>`
+      + '</button>';
     });
-    return '<div class="ptro-paster-select-wrapper" hidden><div class="ptro-paster-select ptro-v-middle">' +
-      '<div class="ptro-in ptro-v-middle-in">' +
-      `<div class="ptro-paste-label">${tr('pasteOptions.how_to_paste')}</div>${
+    return '<div class="ptro-paster-select-wrapper" hidden><div class="ptro-paster-select ptro-v-middle">'
+      + '<div class="ptro-in ptro-v-middle-in">'
+      + `<div class="ptro-paste-label">${tr('pasteOptions.how_to_paste')}</div>${
         buttons}</div></div></div>`;
   }
 }

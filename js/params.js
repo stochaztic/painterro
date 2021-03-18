@@ -98,13 +98,13 @@ export function setDefaults(parameters) {
   params.colorScheme.toolControlNameColor = params.colorScheme.toolControlNameColor || 'rgba(255,255,255,0.7)';
 
   params.colorScheme.activeControl = params.colorScheme.activeControl || '#7485B1';
-  params.colorScheme.activeControlContent = params.colorScheme.activeControlContent ||
-    params.colorScheme.main;
-  params.colorScheme.inputBorderColor = params.colorScheme.inputBorderColor ||
-    params.colorScheme.main;
+  params.colorScheme.activeControlContent = params.colorScheme.activeControlContent
+    || params.colorScheme.main;
+  params.colorScheme.inputBorderColor = params.colorScheme.inputBorderColor
+    || params.colorScheme.main;
   params.colorScheme.inputBackground = params.colorScheme.inputBackground || '#ffffff';
-  params.colorScheme.inputText = params.colorScheme.inputText ||
-    params.colorScheme.activeControl;
+  params.colorScheme.inputText = params.colorScheme.inputText
+    || params.colorScheme.activeControl;
   params.colorScheme.backgroundColor = params.colorScheme.backgroundColor || '#999999';
   params.colorScheme.dragOverBarColor = params.colorScheme.dragOverBarColor || '#899dff';
 
@@ -127,16 +127,15 @@ export function setDefaults(parameters) {
   }
 
   params.toolbarPosition = params.toolbarPosition || 'bottom';
-  params.fixMobilePageReloader = params.fixMobilePageReloader !== undefined ?
-    params.fixMobilePageReloader : true;
+  params.fixMobilePageReloader = params.fixMobilePageReloader !== undefined
+    ? params.fixMobilePageReloader : true;
   if (params.translation) {
-    const name = params.translation.name;
+    const { name } = params.translation;
     Translation.get().addTranslation(name, params.translation.strings);
     Translation.get().activate(name);
   }
 
-  params.styles =
-    `.ptro-color-main{
+  params.styles = `.ptro-color-main{
         background-color: ${params.colorScheme.main};
         color: ${params.colorScheme.controlContent}}
     .ptro-color-control{

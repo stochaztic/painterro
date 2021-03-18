@@ -43,8 +43,8 @@ export default {
   pixelizePixelSize: 'Pixelize pixel size',
   language: 'Language',
   wrongPixelSizeValue:
-    'Wrong pixel size. You can enter e.g. \'20%\' which mean pixel size will be 1/5 of ' +
-    'the selected area side, or \'4\' means 4 px',
+    'Wrong pixel size. You can enter e.g. \'20%\' which mean pixel size will be 1/5 of '
+    + 'the selected area side, or \'4\' means 4 px',
   tools: {
     crop: 'Crop image to selected area',
     pixelize: 'Pixelize selected area',

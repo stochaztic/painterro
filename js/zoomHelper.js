@@ -51,8 +51,8 @@ export default class ZoomHelper {
       y = y < 1 ? 1 : y;
       y = y > this.main.size.h - 1 ? this.main.size.h - 1 : y;
 
-      const captW = this.captW;
-      const periodW = this.periodW;
+      const { captW } = this;
+      const { periodW } = this;
 
       for (let i = 0; i < captW; i += 1) {
         for (let j = 0; j < captW; j += 1) {
@@ -60,16 +60,18 @@ export default class ZoomHelper {
           for (let ii = 0; ii < periodW; ii += 1) {
             for (let jj = 0; jj < periodW; jj += 1) {
               if (ii === periodW - 1 || jj === periodW - 1) {
-                if ((i === this.middle && j === this.middle) ||
-                  (i === this.middle && j === this.middle - 1 && jj === periodW - 1) ||
-                  (i === this.middle - 1 && j === this.middle && ii === periodW - 1)) {
+                if ((i === this.middle && j === this.middle)
+                  || (i === this.middle && j === this.middle - 1 && jj === periodW - 1)
+                  || (i === this.middle - 1 && j === this.middle && ii === periodW - 1)) {
                   this.zomerCtx.putImageData(
                     this.gridColorRed, (i * periodW) + ii,
-                    (j * periodW) + jj);
+                    (j * periodW) + jj,
+                  );
                 } else {
                   this.zomerCtx.putImageData(
                     this.gridColor, (i * periodW) + ii,
-                    (j * periodW) + jj);
+                    (j * periodW) + jj,
+                  );
                 }
               } else {
                 this.zomerCtx.putImageData(d, (i * periodW) + ii, (j * periodW) + jj);

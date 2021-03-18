@@ -9,11 +9,11 @@ export default class WorkLog {
   }
 
   getWorklogAsString(params) {
-    const saveState = Object.assign({}, this.current);
+    const saveState = { ...this.current };
     let curCleared = this.clearedCount;
 
     if (params.limit !== undefined) {
-      const limit = params.limit;
+      const { limit } = params;
       curCleared = 0;
       let active = saveState;
       let i;
