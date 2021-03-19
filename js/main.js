@@ -257,6 +257,9 @@ class PainterroProc {
       activate: () => {
         this.toolContainer.style.cursor = 'crosshair';
       },
+      close: () => {
+        this.emojiTool.close();
+      },
       eventListner: () => this.emojiTool,
     }, {
       name: 'rotate',

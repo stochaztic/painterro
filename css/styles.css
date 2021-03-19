@@ -586,3 +586,9 @@ td.ptro-strict-cell {
     font-size: 8px;
     line-height: normal;
 }
+
+emoji-picker {
+    height: 100%;
+    width: 100%;
+    --num-columns: 15;
+}

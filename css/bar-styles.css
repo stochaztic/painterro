@@ -75,6 +75,7 @@ select.ptro-input[data-id='fontName'] {
 
 .ptro-bar .ptro-icon-btn {
     margin: 4px 0 0 4px;
+    overflow: hidden;
 }
 
 button.ptro-icon-right:first-of-type {
