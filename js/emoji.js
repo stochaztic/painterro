@@ -16,15 +16,22 @@ export default class EmojiTool {
   changeEmoji() {
     if (!this.picker) {
       this.picker = new Picker();
-      this.picker.classList.add('light');
+      this.picker.classList.add('dark');
+
+      // Safari bugfix
+      const style = document.createElement('style');
+      style.textContent = '.picker { z-index: 1; }';
+      this.picker.shadowRoot.appendChild(style);
+
       this.picker.addEventListener('emoji-click', (event) => {
         if (event && event.detail && event.detail.unicode) {
           this.setEmoji(event.detail.unicode);
         }
       });
+      this.picker.style.display = 'flex';
       this.main.wrapper.appendChild(this.picker);
     } else {
-      this.picker.style.display = 'block';
+      this.picker.style.display = 'flex';
     }
   }
 
@@ -49,8 +56,10 @@ export default class EmojiTool {
   }
 
   handleKeyDown(event) {
-    if (event.keyCode === KEYS.esc) {
+    if (event.keyCode === KEYS.esc && this.picker.style.display === 'flex') {
       this.deactivatePicker();
+      event.stopPropagation();
+      event.preventDefault();
     }
   }
 
