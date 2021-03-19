@@ -16,7 +16,7 @@ export default class EmojiTool {
   changeEmoji() {
     if (!this.picker) {
       this.picker = new Picker();
-      this.picker.classList.add('dark');
+      this.picker.classList.add('light');
 
       // Safari bugfix
       const style = document.createElement('style');
