@@ -605,6 +605,10 @@ class PainterroProc {
       icon.className = 'ptro-icon ptro-icon-loading ptro-spinning';
     }
 
+    if (this.select.imagePlaced) {
+      this.select.finishPlacing();
+    }
+
     if (this.params.saveHandler !== undefined) {
       this.params.saveHandler(this.imageSaver, (hide) => {
         if (hide === true) {
