@@ -133,8 +133,22 @@ export default class Inserter {
     const handleIt = (source) => {
       const img = new Image();
       img.onload = () => {
-        this.main.ctx.drawImage(img, opts.x || 0, opts.y || 0,
-          opts.w || img.width, opts.h || img.height);
+        let w = opts.w || img.width;
+        let h = opts.h || img.height;
+        let x = opts.x || 0;
+        let y = opts.y || 0;
+        if (opts.fit) {
+          const childRatio = img.width / img.height;
+          const targetRatio = w / h;
+          if (childRatio > targetRatio) {
+            y += (h - (w / childRatio)) / 2;
+            h = w / childRatio;
+          } else {
+            x += (w - (h * childRatio)) / 2;
+            w = h * childRatio;
+          }
+        }
+        this.main.ctx.drawImage(img, x, y, w, h);
         if (opts.canUndo) {
           this.main.worklog.captureState();
         } else {

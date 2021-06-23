@@ -88,6 +88,7 @@ export function setDefaults(parameters) {
   params.pixelizePixelSize = settings.pixelizePixelSize || params.pixelizePixelSize || '20%';
 
   params.stamps = params.stamps || [{ name: 'Unsplash', value: 'https://source.unsplash.com/random/150x150' }];
+  params.customEmojis = params.customEmojis || [];
 
   params.colorScheme = params.colorScheme || {};
   params.colorScheme.main = params.colorScheme.main || '#dbebff';

@@ -67,7 +67,6 @@ function webpackConfig(target, mode) {
     options = {
       ...options,
       devServer: {
-        injectClient: false,
         static: path.join(__dirname, 'build'),
         hot: true,
       },

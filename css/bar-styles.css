@@ -123,3 +123,8 @@ button.ptro-icon-right:first-of-type {
 .ptro-icon-emoji {
     font-style: normal;
 }
+
+.ptro-icon-emoji img {
+    max-height: 100%;
+    max-width: 100%;
+}

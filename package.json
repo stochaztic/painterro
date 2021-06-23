@@ -23,7 +23,7 @@
     "@babel/preset-env": "^7.12.16",
     "babel-loader": "^8.2.2",
     "css-loader": "^5.0.2",
-    "emoji-picker-element": "^1.4.0",
+    "emoji-picker-element": "^1.5.0",
     "es6-promise": "^4.2.8",
     "eslint": "^7.22.0",
     "eslint-config-airbnb-base": "^14.2.1",

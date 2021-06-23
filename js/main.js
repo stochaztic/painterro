@@ -478,7 +478,7 @@ class PainterroProc {
       }
     });
     this.inserter.init(this);
-    this.emojiTool = new EmojiTool(this);
+    this.emojiTool = new EmojiTool(this, params.customEmojis);
     this.stampTool = new StampTool(this, params.stamps);
     this.floodTool = new FloodTool(this);
     this.colorPicker = new ColorPicker(this, (widgetState) => {
